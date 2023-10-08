@@ -45,7 +45,10 @@ user_route.get("/", userController.loadLogin);
 user_route.post("/", userController.login);
 user_route.get("/logout", userController.logout);
 
-
 user_route.get("/dashboard", userController.loadDashboard);
 
-module.exports = user_route;
+user_route.get("*", function (req, res) {
+  res.redirect("/");
+});
+
+module.exports = user_route; 
