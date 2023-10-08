@@ -2,6 +2,38 @@
 
 <h2 class="mb-4">Hii, <%= user.name %></h2>
 
+<div class="row">
+  <div class="col-md-3">
+    <ul class="list-group">
+      <% if(users.length > 0){ for (let i = 0; i <users.length; i++){ %>
+      <li class="list-group-item cursor-pointer">
+        <img src="<%= 'http://127.0.0.1:5000/'+users[i]['image'] %>" alt="" width="100px" />
+
+        <h2 class="mb-4">Hii, <%= users[i]['name'] %></h2>
+        <!-- <%= users[i]['name'] %> -->
+      </li>
+      <% } } %>
+    </ul>
+  </div>
+  <div class="col-md-9">
+
+
+    <h3> Click to start the chat</h3>
+    <div>
+
+
+        <form action="" id="chat-form">
+            <input type="text" name="message" placeholder="Enter message" id="message" required >
+            <input type="submit" value="send message">
+        </form>
+
+    </div>
+
+
+
+  </div>
+</div>
+
 <%- include('layouts/footer.ejs') %>
 
 <!-- <a href="/logout">Logout</a> -->
