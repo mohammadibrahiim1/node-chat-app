@@ -44,6 +44,7 @@ const login = async (req, res) => {
       if (passwordMatch) {
         req.session.user = userData;
         res.redirect("/dashboard");
+        
       } else {
         res.render("login", { message: "Email and password is Incorrect" });
       }
