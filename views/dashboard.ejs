@@ -3,29 +3,36 @@
 <h2 class="mb-4">Hii, <%= user.name %></h2>
 
 <div class="row">
-  <div class="col-md-3">
-    <ul class="list-group">
+  <div class="col-6">
+    <div class="list-group">
       <% if(users.length > 0){ for (let i = 0; i <users.length; i++){ %>
-      <li class="list-group-item cursor-pointer">
-        <img src="<%= 'http://127.0.0.1:5000/'+users[i]['image'] %>" alt="" width="100px" />
+      <button class="list-group-item list-group-item-dark cursor-pointer " >
+        <img src="<%= 'http://127.0.0.1:5000/ '+users[i]['image'] %>" alt="" width="100px" />
 
-        <h2 class="mb-4">Hii, <%= users[i]['name'] %></h2>
-        <!-- <%= users[i]['name'] %> -->
-      </li>
+        <h2 class="mb-4 click"> <%= users[i]['name'] %></h2>
+       
+      </button>
       <% } } %>
-    </ul>
+    </div>
+      
+    </div>
   </div>
-  <div class="col-md-9">
+  <div class="col-6">
 
 
-    <h3> Click to start the chat</h3>
-    <div>
+    <h3  id="head" > Click to start the chat</h3>
+    <div id="element" >
+ <div class="bg-primary-subtle p-5 "  > 
+   <div class="p-5" >
 
-
-        <form action="" id="chat-form">
+   </div>
+ </div>
+    <form action="" id="chat-form">
             <input type="text" name="message" placeholder="Enter message" id="message" required >
             <input type="submit" value="send message">
-        </form>
+            
+          </form>
+          <button id="close">close chat</button>
 
     </div>
 
@@ -33,6 +40,32 @@
 
   </div>
 </div>
+
+<script>
+
+$(document).ready(function(){
+
+  $('#element').hide();
+
+  $('.click').click(function(){
+    $('#element').show()
+  })
+  $('.click').click(function(){
+    $('#head').hide()
+  })
+
+  $('#close').click(function(){
+    $('#head').show()
+  })
+  $('#close').click(function(){
+    $('#element').hide()
+  })
+
+
+});
+
+
+</script>
 
 <%- include('layouts/footer.ejs') %>
 
