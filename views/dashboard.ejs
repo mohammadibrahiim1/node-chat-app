@@ -6,12 +6,24 @@
   <div class="col-6">
     <div class="list-group">
       <% if(users.length > 0){ for (let i = 0; i <users.length; i++){ %>
-      <button class="list-group-item list-group-item-dark cursor-pointer " >
+      <button class="list-group-item list-group-item-dark cursor-pointer" data-id="<%= users[i]['_id'] %>" >
         <img src="<%= 'http://127.0.0.1:5000/ '+users[i]['image'] %>" alt="" width="100px" />
 
         <h2 class="mb-4 click"> <%= users[i]['name'] %></h2>
+
+        <%   if(users[i]['is_online'] == 1){
+
+%> 
+ <sup class="text-success" id="<%= users[i]['_id'] %> -status " >Online</sup>
+<%
+
+        } else {
+          %> 
+          <sup class="text-danger" id="<%= users[i]['_id'] %> -status " >Offline</sup>
+         <%
+        }      %>
        
-      </button>
+      </button> 
       <% } } %>
     </div>
       
@@ -23,8 +35,15 @@
     <h3  id="head" > Click to start the chat</h3>
     <div id="element" >
  <div class="bg-primary-subtle p-5 "  > 
-   <div class="p-5" >
+   <div class="" >
+    <p class=" text-end text-success">
+      hello
+    </p>
 
+
+    <p class=" text-start text-danger">
+      hello
+    </p>
    </div>
  </div>
     <form action="" id="chat-form">
@@ -32,7 +51,7 @@
             <input type="submit" value="send message">
             
           </form>
-          <button id="close">close chat</button>
+          <button id="close">close chat</button> 
 
     </div>
 
@@ -42,13 +61,27 @@
 </div>
 
 <script>
+const sender_id = '<%= user._id %>';
+var receiver_id  ; 
+const socket = io('/user-namespace', {
+  auth: {
+    token: sender_id
+  }
+});
+
+
+
 
 $(document).ready(function(){
 
-  $('#element').hide();
 
+  
+  $('#element').hide();
+  
   $('.click').click(function(){
-    $('#element').show()
+    $('#element').show();
+    const userId =  $(this).attr('data-id');
+    receiver_id = userId
   })
   $('.click').click(function(){
     $('#head').hide()
@@ -64,6 +97,54 @@ $(document).ready(function(){
 
 });
 
+
+// update user online status
+socket.on('getOnlineUser', function(data){
+$('#'+data.user_id+'-status').text('Online')
+$('#'+data.user_id+'-status').removeClass('text-danger')
+$('#'+data.user_id+'-status').addClass('text-success')
+})
+// update user offline status
+socket.on('getOfflineUser', function(data){
+$('#'+data.user_id+'-status').text('Offline')
+$('#'+data.user_id+'-status').addClass('text-danger')
+$('#'+data.user_id+'-status').removeClass('text-success')
+})
+
+// chat save of user
+
+$('#chat-form').submit(function(event){
+  event.preventDefault();
+  const message = $('#message').val();
+
+  $.ajax({
+    url: 'save-chat',
+    type: 'POST',
+    data: {
+      sender_id: sender_id,
+      receiver_id: receiver_id,
+      message: message
+    },
+    success: function(data){
+      console.log(data);
+      if (data.success) {
+        $('#message').val('');
+        let chat = data.message;
+        let html = `
+
+        <div class="current_user_chat" >
+          
+          <h5> `+chat+` </h5>
+          </div>
+
+        `;
+
+      }else{
+        alert(data.message)
+      }
+    }
+  })
+})
 
 </script>
 
