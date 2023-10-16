@@ -39,7 +39,7 @@ app.use(express.urlencoded({ extended: true }));
 app.set("view engine", "ejs");
 
 // set static folder
-app.use(express.static(path.join(__dirname, "public")));
+app.use(express.static(path.join(__dirname, "publics")));
 
 // parse cookies
 app.use(cookieParser(process.env.COOKIE_SECRET)); 
@@ -53,7 +53,7 @@ app.use("/", getLogin);
 app.use(notFoundHandler);
 
 // common error handler
-app.use(errorHandler);
+app.use(errorHandler); 
 
 // const http = require("http").Server(app);
 
