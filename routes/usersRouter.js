@@ -2,11 +2,11 @@
 const express = require("express");
 
 // internal imports
-const { getLogin } = require("../controllers/loginController");
+const { getUsers } = require("../controllers/usersController");
 
 const router = express.Router();
 
 // login page
-router.get("/", getLogin);
+router.get("/", getUsers);
 
 module.exports = router;

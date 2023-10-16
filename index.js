@@ -6,7 +6,9 @@ const mongoose = require("mongoose");
 const cookieParser = require("cookie-parser");
 const path = require("path");
 
-// const loginRouter = require("./routes/loginRouter");
+// import router
+const loginRouter = require("./routes/loginRouter");
+const usersRouter = require("./routes/usersRouter");
 
 // internal imports
 
@@ -14,7 +16,8 @@ const {
   notFoundHandler,
   errorHandler,
 } = require("./middlewares/common/errorHandler");
-const { getLogin } = require("./controllers/loginController");
+
+// const { getLogin } = require("./controllers/loginController");
 
 const app = express();
 
@@ -42,18 +45,18 @@ app.set("view engine", "ejs");
 app.use(express.static(path.join(__dirname, "publics")));
 
 // parse cookies
-app.use(cookieParser(process.env.COOKIE_SECRET)); 
+app.use(cookieParser(process.env.COOKIE_SECRET));
 
 // routing setup
-app.use("/", getLogin);
-// app.use("/users", usersRouter);
+app.use("/", loginRouter);
+app.use("/users", usersRouter);
 // app.use("inbox", inboxRouter);
 
 // 404 not found  handler
 app.use(notFoundHandler);
 
 // common error handler
-app.use(errorHandler); 
+app.use(errorHandler);
 
 // const http = require("http").Server(app);
 
