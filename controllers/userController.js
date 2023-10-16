@@ -1,5 +1,5 @@
 const Chat = require("../models/chatModel");
-const User = require("../models/userModel");
+const User = require("../models/peoples");
 const bcrypt = require("bcrypt");
 
 const registerLoad = async (req, res) => {

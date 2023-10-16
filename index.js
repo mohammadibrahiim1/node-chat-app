@@ -12,19 +12,12 @@ const usersRouter = require("./routes/usersRouter");
 const inboxRouter = require("./routes/inboxRouter");
 
 // internal imports
-
 const {
   notFoundHandler,
   errorHandler,
 } = require("./middlewares/common/errorHandler");
 
-// const { getLogin } = require("./controllers/loginController");
-
 const app = express();
-
-// mongoose.connect(
-//   `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@cluster0.wuwpwwx.mongodb.net/chat-app?retryWrites=true&w=majority`
-// );
 
 // database connection
 mongoose
