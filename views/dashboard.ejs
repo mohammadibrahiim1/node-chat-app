@@ -19,7 +19,7 @@
 
         } else {
           %> 
-          <sup class="text-danger" id="<%= users[i]['_id'] %> -status " >Offline</sup>
+          <sup class="text-danger" id="<%= users[i]['_id'] %> -status" >Offline</sup>
          <%
         }      %>
        
@@ -32,18 +32,18 @@
   <div class="col-6">
 
 
-    <h3  id="head" > Click to start the chat</h3>
-    <div id="element" >
- <div class="bg-primary-subtle p-5 "  > 
+    <h3  id="start-head" > Click to start the chat</h3>
+    <div id="chat-section" >
+ <div class="bg-primary-subtle p-5"   id="chat-container" > 
    <div class="" >
-    <p class=" text-end text-success">
+    <!-- <p class="text-end text-success" >
       hello
     </p>
 
 
-    <p class=" text-start text-danger">
+    <p class="text-start text-danger">
       hello
-    </p>
+    </p> -->
    </div>
  </div>
     <form action="" id="chat-form">
@@ -62,37 +62,37 @@
 
 <script>
 const sender_id = '<%= user._id %>';
-var receiver_id  ; 
+var receiver_id; 
 const socket = io('/user-namespace', {
   auth: {
     token: sender_id
   }
 });
 
-
-
-
 $(document).ready(function(){
-
-
   
-  $('#element').hide();
-  
+  $('#chat-section').hide();
   $('.click').click(function(){
-    $('#element').show();
-    const userId =  $(this).attr('data-id');
+    var userId =$(this).attr('data-id');
     receiver_id = userId
+    $('#start-head').hide();
+    $('#chat-section').show()
   })
-  $('.click').click(function(){
-    $('#head').hide()
-  })
+  
+  
+  // $('.click').click(function(){
+  //   $('#element').show();
+  // })
+  // $('.click').click(function(){
+  //   $('#head').hide()
+  // })
 
-  $('#close').click(function(){
-    $('#head').show()
-  })
-  $('#close').click(function(){
-    $('#element').hide()
-  })
+  // $('#close').click(function(){
+  //   $('#head').show()
+  // })
+  // $('#close').click(function(){
+  //   $('#element').hide()
+  // })
 
 
 });
@@ -131,19 +131,25 @@ $('#chat-form').submit(function(event){
         $('#message').val('');
         let chat = data.message;
         let html = `
-
-        <div class="current_user_chat" >
-          
-          <h5> `+chat+` </h5>
-          </div>
-
+        <div class="current_user_chat text-end" >
+       <h5> `+chat+` </h5>
+        </div>
         `;
 
+ $('#chat-container').append(html);
+ socket.emit('newChat', data.data.message)
       }else{
         alert(data.message)
       }
     }
   })
+});
+
+socket.on('loadNewChat', function(data){
+let html = ` <div class="distance_user_chat text-start" >
+       <h5> `+chat+` </h5>
+        </div>`;
+        $('#chat-container').append(html)
 })
 
 </script>

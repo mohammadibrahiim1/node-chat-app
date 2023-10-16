@@ -65,6 +65,12 @@ usp.on("connection", async function (socket) {
 
     console.log(userId);
   });
+  
+
+  // chatting implementation
+  socket.on("newChat", function (data) {
+    socket.broadcast.emit("loadNewChat", data);
+  });
 });
 
 http.listen(5000, function () {

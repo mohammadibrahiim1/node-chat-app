@@ -10903,10 +10903,60 @@ a[data-toggle="collapse"] {
   cursor: pointer;
 }
 
-
-#chat-container{
+#chat-container {
   background-color: lightblue;
   width: 100%;
   height: 400px;
   overflow: scroll;
 }
+
+/* requirements */
+
+/* 
+login page-{
+  user can log in with his email/phone and password 
+  database: {
+
+    when user log in some user data save in database like: 
+    *user name
+    *email
+    *password
+    *avatar  
+    *mobile number
+  }
+}
+inbox page-{
+  see the message
+  and store the message information to data base: {
+    *text
+    *attachment
+    *sender
+    *receiver
+    *date_time
+  }
+
+  store_user_conversation:{
+    id,
+    creator_id,
+    participant,
+    last_uploaded,
+
+  }
+
+}
+
+application functionality:
+
+* addUser-add new user 
+*login-login user
+*delete-delete user
+*get conversations- get log in user conversations
+*get messages - get messages of a conversations 
+* send message - send message to recipient
+*delete conversations
+
+
+
+
+
+ */

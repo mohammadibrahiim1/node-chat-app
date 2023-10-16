@@ -1,5 +1,5 @@
-const User = require("../models/userModel");
 const Chat = require("../models/chatModel");
+const User = require("../models/userModel");
 const bcrypt = require("bcrypt");
 
 const registerLoad = async (req, res) => {
@@ -77,12 +77,14 @@ const loadDashboard = async (req, res) => {
 
 const saveChat = async (req, res) => {
   try {
-    const chat =  new Chat({
+    const chat = new Chat({
       sender_id: req.body.sender_id,
       receiver_id: req.body.receiver_id,
       message: req.body.message,
     });
-    const newChat = await chat.save();
+   
+
+    const newChat = chat.save();
     res.status(200).send({
       success: true,
       message: "chat save successfully",
