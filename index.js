@@ -1,78 +1,121 @@
-require("dotenv").config();
-const cors = require("cors");
+// external imports
+const dotenv = require("dotenv");
+dotenv.config();
 const express = require("express");
 const mongoose = require("mongoose");
+const cookieParser = require("cookie-parser");
+const path = require("path");
 
-mongoose.connect(
-  `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@cluster0.wuwpwwx.mongodb.net/chat-app?retryWrites=true&w=majority`
-);
+// const loginRouter = require("./routes/loginRouter");
+
+// internal imports
+
+const {
+  notFoundHandler,
+  errorHandler,
+} = require("./middlewares/common/errorHandler");
+const { getLogin } = require("./controllers/loginController");
 
 const app = express();
 
-app.use(cors());
-// app.use(express.json());
+// mongoose.connect(
+//   `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@cluster0.wuwpwwx.mongodb.net/chat-app?retryWrites=true&w=majority`
+// );
 
-const http = require("http").Server(app);
+// database connection
+mongoose
+  .connect(process.env.MONGO_CONNECTION_STRING, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
+  .then(() => console.log("database connection successful!"))
+  .catch((error) => console.log(error));
 
-const userRoute = require("./routes/userRoute");
+// request parser
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
-const user = require("./models/userModel");
+// set view engine
+app.set("view engine", "ejs");
 
-app.use("/", userRoute);
+// set static folder
+app.use(express.static(path.join(__dirname, "public")));
 
-const io = require("socket.io")(http);
+// parse cookies
+app.use(cookieParser(process.env.COOKIE_SECRET)); 
 
-var usp = io.of("/user-namespace");
+// routing setup
+app.use("/", getLogin);
+// app.use("/users", usersRouter);
+// app.use("inbox", inboxRouter);
 
-usp.on("connection", async function (socket) {
-  console.log("user connected");
+// 404 not found  handler
+app.use(notFoundHandler);
 
-  const userId = socket.handshake.auth.token;
+// common error handler
+app.use(errorHandler);
 
-  await user.findByIdAndUpdate(
-    {
-      _id: userId,
-    },
-    {
-      $set: { is_online: "1" },
-    }
-  );
+// const http = require("http").Server(app);
 
-  // user broadcast online status
-  socket.broadcast.emit("getOnlineUser", {
-    user_id: userId,
-  });
+// const userRoute = require("./routes/userRoute");
 
-  console.log(userId);
+// const user = require("./models/userModel");
+// // const cookieParser = require("cookie-parser");
 
-  socket.on("disconnect", async function () {
-    const userId = socket.handshake.auth.token;
-    console.log("user disconnected");
+// app.use("/", userRoute);
 
-    await user.findByIdAndUpdate(
-      {
-        _id: userId,
-      },
-      {
-        $set: { is_online: "0" },
-      }
-    );
+// const io = require("socket.io")(http);
 
-    //* user broadcast offline status
-    socket.broadcast.emit("getOfflineUser", {
-      user_id: userId,
-    });
+// var usp = io.of("/user-namespace");
 
-    console.log(userId);
-  });
-  
+// usp.on("connection", async function (socket) {
+//   console.log("user connected");
 
-  // chatting implementation
-  socket.on("newChat", function (data) {
-    socket.broadcast.emit("loadNewChat", data);
-  });
-});
+//   const userId = socket.handshake.auth.token;
 
-http.listen(5000, function () {
-  console.log("chat-app server is running");
+//   await user.findByIdAndUpdate(
+//     {
+//       _id: userId,
+//     },
+//     {
+//       $set: { is_online: "1" },
+//     }
+//   );
+
+//   // user broadcast online status
+//   socket.broadcast.emit("getOnlineUser", {
+//     user_id: userId,
+//   });
+
+//   console.log(userId);
+
+//   socket.on("disconnect", async function () {
+//     const userId = socket.handshake.auth.token;
+//     console.log("user disconnected");
+
+//     await user.findByIdAndUpdate(
+//       {
+//         _id: userId,
+//       },
+//       {
+//         $set: { is_online: "0" },
+//       }
+//     );
+
+//     //* user broadcast offline status
+//     socket.broadcast.emit("getOfflineUser", {
+//       user_id: userId,
+//     });
+
+//     console.log(userId);
+//   });
+
+//   // chatting implementation
+//   socket.on("newChat", function (data) {
+//     socket.broadcast.emit("loadNewChat", data);
+//   });
+// });
+
+app.listen(process.env.PORT, () => {
+  console.log(`CHAT-APP LISTENING TO PORT ${process.env.PORT}`);
 });
