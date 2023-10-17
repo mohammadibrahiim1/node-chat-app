@@ -18,15 +18,11 @@ router.get("/", decorateHtmlResponse("Users"), getUsers);
 
 // add user
 router.post(
-  "/users",
+  "/",
   avatarUpload,
   addUserValidators,
   addUserValidationHandler,
-  addUser,
-  (req, res) => {
-    req.flash("success", "User has been successfully added!");
-    res.redirect("/");
-  }
+  addUser
 );
 
 module.exports = router;

@@ -1,8 +1,10 @@
 const { check, validationResult } = require("express-validator");
 const createError = require("http-errors");
 const { unlink } = require("fs");
+const path = require("path");
 // initials imports
 const User = require("../../models/userModel");
+
 // add user
 const addUserValidators = [
   check("name")
@@ -56,22 +58,17 @@ const addUserValidationHandler = (req, res, next) => {
   } else {
     if (req.files.length > 0) {
       const { filename } = req.files[0];
-      unlink(path.join(__dirname, `/../publics/uploads/avatars/${filename}`));
-
-      (error) => {
-        if (error) console.log(error);
-      };
+      unlink(
+        path.join(__dirname, `/../publics/uploads/avatars/${filename}`),
+        (error) => {
+          if (error) console.log(error);
+        }
+      );
     }
+
+    // response the error
+    res.status(500).json({ errors: mappedErrors });
   }
-  //  mappedErrors ={
-  //     name: {
-  //         msg: "Name is required",
-  //     }
-  //     ,
-  //     email: {
-  //         msg: "Invalid email address!"
-  //     },
-  // }
 };
 
 module.exports = {
