@@ -114,7 +114,7 @@ app.use(errorHandler);
 //   socket.on("newChat", function (data) {
 //     socket.broadcast.emit("loadNewChat", data);
 //   });
-// });
+// }); 
 
 app.listen(process.env.PORT, () => {
   console.log(`CHAT-APP LISTENING TO PORT ${process.env.PORT}`);

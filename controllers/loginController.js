@@ -62,16 +62,16 @@ const login = async (req, res, next) => {
       },
       errors: {
         common: {
-          msg: err.message,
+          msg: error.message,
         },
       },
     });
   }
 };
 // do logout
-function logout(req, res) {
+const logout = (req, res) => {
   res.clearCookie(process.env.COOKIE_NAME);
   res.send("logged out");
-}
+};
 
 module.exports = { getLogin, login, logout };
