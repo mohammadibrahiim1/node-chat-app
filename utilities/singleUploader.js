@@ -10,11 +10,12 @@ const uploader = (
 ) => {
   const UPLOADS_FOLDER = `${__dirname}/../publics/uploads/${subfolder_path}/`;
 
+  // define the storage
   const storage = multer.diskStorage({
     destination: (req, file, cb) => {
       cb(null, UPLOADS_FOLDER);
     },
-    filename: (req, res, cb) => {
+    filename: (req, file, cb) => {
       const fileExt = path.extname(file.originalname);
       const fileName =
         file.originalname

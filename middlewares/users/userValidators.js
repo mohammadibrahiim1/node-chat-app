@@ -67,7 +67,7 @@ const addUserValidationHandler = (req, res, next) => {
     }
 
     // response the error
-    res.status(500).json({ errors: mappedErrors });
+    res.status(500).json({ errors: mappedErrors }); 
   }
 };
 
