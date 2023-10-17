@@ -38,7 +38,7 @@ const addUser = async (req, res, next) => {
     const result = await newUser.save();
     res.status(200).json({
       message: "User was added successfully",
-      // data: result,
+      data: result,
     });
   } catch (error) {
     res.status(500).json({
