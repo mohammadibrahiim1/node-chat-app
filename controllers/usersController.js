@@ -3,12 +3,11 @@ const path = require("path");
 const User = require("../models/userModel");
 const { unlink } = require("fs");
 
-
-
 // get users
 const getUsers = async (req, res, next) => {
   try {
     const users = await User.find();
+    console.log(users);
     res.render("users", {
       users: users,
     });
@@ -51,4 +50,37 @@ const addUser = async (req, res, next) => {
     });
   }
 };
-module.exports = { getUsers, addUser };
+
+// remove user
+const removeUser = async (req, res, next) => {
+  try {
+    const user = await User.findByIdAndDelete({
+      _id: req.params.id,
+
+      // remove user avatar if any
+    });
+    if (user.avatar) {
+      unlink(
+        path.join(__dirname, `/../publics/uploads/avatars/${user.avatar}`),
+        (error) => {
+          if (error) {
+            console.log(error);
+          }
+        }
+      );
+    }
+
+    res.status(200).json({
+      message: "User was removed successfully!",
+    });
+  } catch (error) {
+    res.status(500).json({
+      errors: {
+        common: {
+          message: "Could not delete the user",
+        },
+      },
+    });
+  }
+};
+module.exports = { getUsers, addUser, removeUser };
