@@ -2,7 +2,7 @@ const { check, validationResult } = require("express-validator");
 const createError = require("http-errors");
 const { unlink } = require("fs");
 // initials imports
-const User = require("../../models/peoples");
+const User = require("../../models/userModel");
 // add user
 const addUserValidators = [
   check("name")
@@ -19,7 +19,7 @@ const addUserValidators = [
       try {
         const user = await User.findOne({ email: value });
         if (user) {
-          throw createHttpError("Email already is use!");
+          throw createError("Email already is use!");
         }
       } catch (error) {
         throw createError(error.message);
