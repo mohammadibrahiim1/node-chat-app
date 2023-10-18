@@ -12,8 +12,8 @@ const usersRouter = require("./routes/usersRouter");
 const inboxRouter = require("./routes/inboxRouter");
 
 // internal imports
-const {
-  notFoundHandler,
+const { 
+  notFoundHandler,  
   errorHandler,
 } = require("./middlewares/common/errorHandler");
 

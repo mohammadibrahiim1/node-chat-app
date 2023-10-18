@@ -26,6 +26,8 @@ const getInbox = async (req, res, next) => {
   }
 };
 
+
+// search user
 const searchUser = async (req, res, next) => {
   const user = req.body.user;
   const searchQuery = user.replace("+88", "");
@@ -71,7 +73,7 @@ const searchUser = async (req, res, next) => {
 // add conversation
 const addConversation = async (req, res, next) => {
   try {
-    const newConversation = new Conversation({
+    const newConversation = new conversationModel({
       creator: {
         id: req.user.userid,
         name: req.user.username,
@@ -108,7 +110,7 @@ const getMessages = async (req, res, next) => {
       conversation_id: req.params.conversation_id,
     }).sort("-createdAt");
 
-    const { participant } = await Conversation.findById(
+    const { participant } = await conversationModel.findById(
       req.params.conversation_id
     );
 
@@ -166,7 +168,7 @@ const sendMessages = async (req, res, next) => {
 
       // emit socket event
 
-      global.importScripts.emit("new_message", {
+      global.io.emit("new_message", {
         message: {
           conversation_id: req.body.conversationId,
           sender: {
@@ -182,9 +184,10 @@ const sendMessages = async (req, res, next) => {
       });
 
       res.status(200).json({
-        message: "Successfull",
+        message: "Successful",
         data: result,
       });
+      console.log(data);
     } catch (error) {
       res.status(500).json({
         errors: {
