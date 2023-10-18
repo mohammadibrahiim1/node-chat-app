@@ -1,6 +1,6 @@
 const { default: mongoose } = require("mongoose");
 
-const conversationSchema = mongoose.Schema(
+const conversationSchema = new mongoose.Schema(
   {
     creator: {
       id: mongoose.Types.ObjectId,
@@ -24,4 +24,4 @@ const conversationSchema = mongoose.Schema(
 
 const conversationModel = mongoose.model("conversation", conversationSchema);
 
-module.exports = conversationSchema;
+module.exports = conversationModel;
