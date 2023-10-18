@@ -7,7 +7,7 @@ const {
   searchUser,
   addConversation,
   getMessages,
-  sendMessages,
+  sendMessage,
 } = require("../controllers/inboxController");
 const decorateHtmlResponse = require("../middlewares/common/decorateHtmlResponse");
 const { checkLogin } = require("../middlewares/common/checkLogin");
@@ -28,6 +28,6 @@ router.post("/conversation", checkLogin, addConversation);
 router.get("/messages/:conversation_id", checkLogin, getMessages);
 
 // send messages
-router.post("/messages", checkLogin, attachmentUpload, sendMessages);
+router.post("/messages", checkLogin, attachmentUpload, sendMessage);
 
 module.exports = router;

@@ -15,7 +15,7 @@ const inboxRouter = require("./routes/inboxRouter");
 const { 
   notFoundHandler,  
   errorHandler,
-} = require("./middlewares/common/errorHandler");
+} = require("./middlewares/common/errorHandler"); 
 
 const app = express();
 
