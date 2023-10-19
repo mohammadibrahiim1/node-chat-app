@@ -3,13 +3,13 @@ const createError = require("http-errors");
 // internal imports
 const Message = require("../models/Message");
 const escape = require("../utilities/escape");
-const conversationModel = require("../models/conversationModel");
 const User = require("../models/userModel");
+const Conversation = require("../models/conversationModel");
 
 // get inbox page
 async function getInbox(req, res, next) {
   try {
-    const conversations = await conversationModel.find({
+    const conversations = await Conversation.find({
       $or: [
         { "creator.id": req.user.userid },
         { "participant.id": req.user.userid },
@@ -68,7 +68,7 @@ async function searchUser(req, res, next) {
 // add conversation
 async function addConversation(req, res, next) {
   try {
-    const newConversation = new conversationModel({
+    const newConversation = new Conversation({
       creator: {
         id: req.user.userid,
         name: req.user.username,
@@ -82,7 +82,7 @@ async function addConversation(req, res, next) {
     });
 
     const result = await newConversation.save();
-    
+
     res.status(200).json({
       message: "Conversation was added successfully!",
     });
@@ -104,7 +104,7 @@ async function getMessages(req, res, next) {
       conversation_id: req.params.conversation_id,
     }).sort("-createdAt");
 
-    const { participant } = await conversationModel.findById(
+    const { participant } = await Conversation.findById(
       req.params.conversation_id
     );
 
