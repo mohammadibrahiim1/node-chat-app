@@ -3,17 +3,17 @@ const dotenv = require("dotenv");
 dotenv.config();
 const express = require("express");
 const mongoose = require("mongoose");
-const cookieParser = require("cookie-parser");
+const cookieParser = require("cookie-parser"); 
 const path = require("path");
 
 // import router
 const loginRouter = require("./routes/loginRouter");
-const usersRouter = require("./routes/usersRouter");
+const usersRouter = require("./routes/usersRouter"); 
 const inboxRouter = require("./routes/inboxRouter");
 
 // internal imports
 const { 
-  notFoundHandler,  
+  notFoundHandler,   
   errorHandler,
 } = require("./middlewares/common/errorHandler"); 
 
@@ -117,5 +117,5 @@ app.use(errorHandler);
 // }); 
 
 app.listen(process.env.PORT, () => {
-  console.log(`CHAT-APP LISTENING TO PORT ${process.env.PORT}`);
+  console.log(`CHAT-APP LISTENING TO PORT ${process.env.PORT}`); 
 });

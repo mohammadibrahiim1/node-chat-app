@@ -356,6 +356,26 @@ input[type="submit"]:active {
   padding: 0 20px;
   overflow-y: scroll;
 }
+.nothing {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  place-content: center;
+  color: rgba(255, 255, 255, 0.2);
+  font-size: 2.5rem;
+}
+
+.nothing img {
+  width: 100%;
+  max-width: 120px;
+}
+
+@media only screen and (max-width: 1000px) {
+  .nothing {
+    display: none;
+  }
+}
+
 
 .message-row {
   display: grid;
